@@ -1,19 +1,25 @@
 import React from "react";
 import { range } from "../../utils.js";
 import { checkGuess } from "../src/game-helpers.js";
-import { check } from "prettier";
 
-function Guess({ value }) {
-  const className = checkGuess(value) ? "guess correct" : "guess incorrect";
+function Cell({ letter, status }) {
+  const className = status ? `cell ${status}` : "cell";
+  return <span className={className}>{letter}</span>;
+}
+
+function Guess({ value, answer }) {
+  const result = checkGuess(value, answer);
 
   return (
     <p className="guess">
       {range(5)
         .split("")
         .map((num) => (
-          <span key={num} className="cell">
-            {value ? value[num] : undefined}
-          </span>
+          <Cell
+            key={num}
+            letter={result ? result[num].letter : undefined}
+            status={result ? result[num].status : undefined}
+          />
         ))}
     </p>
   );
